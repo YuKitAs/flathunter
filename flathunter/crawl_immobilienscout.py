@@ -7,7 +7,7 @@ class CrawlImmobilienscout:
     URL_PATTERN = re.compile(r'https://www\.immobilienscout24\.de')
 
     def __init__(self):
-        logging.getLogger("requests").setLevel(logging.WARNING)
+        logging.getLogger("requests").setLevel(logging.DEBUG)
 
     def get_results(self, search_url):
         # convert to paged URL
@@ -28,6 +28,7 @@ class CrawlImmobilienscout:
             no_of_results = int(soup.find_all(lambda e: e.has_attr('data-is24-qa') and e['data-is24-qa'] == 'resultlist-resultCount')[0].text)
         except IndexError:
             self.__log__.debug('Index Error occured')
+            no_of_results = 0
         # get data from first page
         entries = self.extract_data(soup)
 
