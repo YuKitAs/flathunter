@@ -5,12 +5,13 @@
 ## Quick Setup
 ```
 sudo apt-get update
+sudo apt-get upgrade
 sudo apt-get install wget
 wget https://github.com/tschuehly/flathunter/archive/master.zip
 sudo apt-get install unzip
 unzip master.zip
 cd flathunter-master
-sudo apt-get install python-pip
+sudo apt-get install python-pip python3-dev
 pip install -r requirements.txt
 mv config.yaml.dist config.yaml
 nano config.yaml
