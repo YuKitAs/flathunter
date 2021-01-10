@@ -52,32 +52,33 @@ class CrawlWgGesucht:
 
         baseurl = 'https://www.wg-gesucht.de/'
 
-        for index,row in enumerate(existingFindings):
-            #print "Current Index is: "+ str(index) + "\n"
-            #print row 
-            infostring = row.find(
-                lambda e: e.name == "div" and e.has_attr('class') and 'list-details-panel-inner' in e[
-                    'class']).p.text.strip()
-            #print(infostring)
-            rooms = re.findall(r'\der WG', infostring)[0][:1]
-            date = re.findall(r'\d{2}.\d{2}.\d{4}', infostring)[0]
-            detail = row.find_all(lambda e: e.name == "a" and e.has_attr('class') and 'detailansicht' in e['class']);
-            title = detail[2].text.strip()
-            url = baseurl + detail[0]["href"]
-            size_price = detail[0].text.strip()
-            price = re.findall(r'\d{2,4}\s€', size_price)[0]
-            size = re.findall(r'\d{2,4}\sm²', size_price)[0]
+        for index, row in enumerate(existingFindings):
+            # print "Current Index is: "+ str(index) + "\n"
+            # print row
+            el = row.fine(
+                lambda e: e.name == "div" and e.has_attr('class') and 'list-details-panel-inner' in e['class'])
+            if el is not None:
+                infostring = el.p.text.strip()
+                # print(infostring)
+                rooms = re.findall(r'\der WG', infostring)[0][:1]
+                date = re.findall(r'\d{2}.\d{2}.\d{4}', infostring)[0]
+                detail = row.find_all(lambda e: e.name == "a" and e.has_attr('class') and 'detailansicht' in e['class']);
+                title = detail[2].text.strip()
+                url = baseurl + detail[0]["href"]
+                size_price = detail[0].text.strip()
+                price = re.findall(r'\d{2,4}\s€', size_price)[0]
+                size = re.findall(r'\d{2,4}\sm²', size_price)[0]
 
-            details = {
-                'id': int(url.split('.')[-2]),
-                'url': url,
-                'title': "%s ab dem %s" % (title, date),
-                'price': price,
-                'size': size,
-                'rooms': rooms + " Zi.",
-                'address': url
-            }
-            entries.append(details)
+                details = {
+                    'id': int(url.split('.')[-2]),
+                    'url': url,
+                    'title': "%s ab dem %s" % (title, date),
+                    'price': price,
+                    'size': size,
+                    'rooms': rooms + " Zi.",
+                    'address': url
+                }
+                entries.append(details)
 
         self.__log__.debug('extracted: ' + str(entries))
 
