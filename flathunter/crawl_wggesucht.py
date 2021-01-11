@@ -55,7 +55,7 @@ class CrawlWgGesucht:
         for index, row in enumerate(existingFindings):
             # print "Current Index is: "+ str(index) + "\n"
             # print row
-            el = row.fine(
+            el = row.find(
                 lambda e: e.name == "div" and e.has_attr('class') and 'list-details-panel-inner' in e['class'])
             if el is not None:
                 infostring = el.p.text.strip()
